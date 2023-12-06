@@ -1,4 +1,3 @@
-// src/components/CartItem.js
 import React from 'react';
 import { Card, CardContent, CardMedia, Typography } from '@material-ui/core';
 

@@ -1,4 +1,3 @@
-// src/components/Cart.js
 import React, { useState } from 'react';
 import CartItem from './CartItem';
 import { Typography, List, ListItem, ListItemText, IconButton, Badge, Drawer } from '@material-ui/core';

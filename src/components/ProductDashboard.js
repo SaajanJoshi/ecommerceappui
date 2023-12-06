@@ -1,4 +1,3 @@
-// src/components/ProductDashboard.js
 import React, { useState } from 'react';
 import { Button, Paper, Typography, Input } from '@material-ui/core';
 import AddShoppingCartIcon from '@material-ui/icons/AddShoppingCart';
