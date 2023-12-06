@@ -1,8 +1,8 @@
-const BASE_URL = 'http://localhost:3000/api/v1/users/login';
+const BASE_URL = process.env.REACT_APP_BASE_URL
 
 export const loginUser = async (email, password) => {
   try {
-    const response = await fetch(BASE_URL, {
+    const response = await fetch(BASE_URL + "/users/login", {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

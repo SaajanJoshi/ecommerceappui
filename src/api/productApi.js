@@ -1,10 +1,10 @@
 // src/api/productApi.js
 
-const BASE_URL = 'http://localhost:3000/api/v1/products/';
+const BASE_URL = process.env.REACT_APP_BASE_URL;
 
 export const getAllProducts = async () => {
   try {
-    const response = await fetch(`${BASE_URL}`);
+    const response = await fetch(BASE_URL + "/products/");
     const data = await response.json();
 
     return data.map((item) => ({

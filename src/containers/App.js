@@ -12,7 +12,7 @@ import './App.css';
 
 const Home = () => {
   const [products, setProducts] = useState([]);
-  const { addToCart } = useUser();
+  const { addToCart } = {...useUser()};
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -47,7 +47,7 @@ const Home = () => {
 };
 
 const App = () => {
-  const { user, logout, cartItems } = useUser();
+  const { user, logout, cartItems } = {...useUser()};
   const [cartPopoverAnchorEl, setCartPopoverAnchorEl] = useState(null);
 
   useEffect(() => {

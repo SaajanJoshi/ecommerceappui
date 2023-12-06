@@ -7,7 +7,6 @@ export const UserProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [token, setToken] = useState(null);
   const [cartItems, setCartItems] = useState([]);
-  const [statusCiode, setStatusCode] = useState(null);
 
   const addToCart = (product) => {
     // Logic to update cartItems
@@ -25,7 +24,6 @@ export const UserProvider = ({ children }) => {
         return updatedItems;
       }
     });
-    console.log('Updated cartItems:', cartItems);
   };
 
   const login = (username, token) => {
@@ -38,8 +36,17 @@ export const UserProvider = ({ children }) => {
     setToken(null);
   };
 
-  console.log('UserContext:', { user, cartItems, token });
-  return <UserContext.Provider value={{ user, login, logout, cartItems, addToCart, token }}>{children}</UserContext.Provider>;
+  const data = { user, 
+    login, 
+    logout, 
+    cartItems, 
+    addToCart, 
+    token
+  };
+
+  return <UserContext.Provider value={data}>
+    {children}
+    </UserContext.Provider>;
 };
 
 export const useUser = () => {
