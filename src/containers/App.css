@@ -1,0 +1,6 @@
+/* src/containers/App.css */
+.app {
+    display: flex;
+    justify-content: space-around;
+  }
+  

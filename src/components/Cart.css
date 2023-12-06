@@ -1,0 +1,21 @@
+/* src/components/Cart.css */
+.cart {
+    position: relative;
+    margin-right: 16px;
+  }
+  
+  .cart-drawer {
+    width: 300px;
+    padding: 16px;
+  }
+  
+  .cart-title {
+    margin-bottom: 16px;
+  }
+  
+  .close-icon {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+  }
+  
