@@ -7,6 +7,7 @@ import ProductDashboard from '../components/ProductDashboard';
 import LoginForm from '../components/LoginForm';
 import RegisterForm from '../components/RegisterForm';
 import { getAllProducts } from '../api/productApi';
+import ProductDetailPage from '../components/ProductDetailPage'
 
 import './App.css';
 
@@ -38,7 +39,19 @@ const Home = () => {
       <Grid container spacing={3}>
         {products.map((product) => (
           <Grid key={product.id} item xs={12} sm={6} md={4} lg={3}>
-            <ProductDashboard product={product} onAddToCart={handleAddToCart} />
+          <Link to={`/product/${product.id}`} onClick={(event) => {
+            // Check if the click target is the quantity input or the button
+            const isQuantityControl = event.target.matches('.quantity-control input');
+            const isAddToCartButton = event.target.matches('.add-to-cart-btn span');
+
+            // If clicked on quantity input or Add to Cart button, prevent link navigation
+            if (isQuantityControl || isAddToCartButton) {
+              event.preventDefault();
+            }
+          }} style={{ textDecoration: 'none', color: 'inherit' }}>
+
+                  <ProductDashboard product={product} onAddToCart={handleAddToCart} />
+          </Link>
           </Grid>
         ))}
       </Grid>
@@ -137,6 +150,8 @@ const App = () => {
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<LoginForm />} />
           <Route path="/register" element={<RegisterForm />} />
+          <Route path="/product/:productId" element={<ProductDetailPage />} />
+          <Route path="*" element={<h1>Not Found</h1>} />
         </Routes>
       </div>
     </Router>

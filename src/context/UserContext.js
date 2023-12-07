@@ -35,7 +35,7 @@ export const UserProvider = ({ children }) => {
     setToken(null);
   };
 
-  const data = { user, 
+  const data = {user, 
     login, 
     logout, 
     cartItems, 
