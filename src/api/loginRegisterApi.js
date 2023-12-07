@@ -29,3 +29,26 @@ export const loginUser = async (email, password) => {
     throw new Error('Error during login');
   }
 };
+
+export const registerUser = async (registerData) => {
+  try {
+    const response = await fetch(BASE_URL + "/users/register", {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({...registerData}),
+    });
+
+    if (!response.ok) {
+      // Handle non-successful response (e.g., authentication failure)
+      console.error('registration failed:', response.statusText);
+      throw new Error('Registration failed');
+    }
+
+    return response.status;
+  } catch (error) {
+    console.error('Error during register:', error);
+    throw new Error('Error during register');
+  }
+}

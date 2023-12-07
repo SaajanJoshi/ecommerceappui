@@ -1,11 +1,22 @@
 // ProductDetailPage.js
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { Container, Typography, Grid, Card, CardContent, CardMedia, Button, Input } from '@material-ui/core';
+import { Container, Typography, Grid, Card, CardContent, CardMedia, Button, Input,makeStyles } from '@material-ui/core';
 import { getProductById } from '../api/productApi'; // Import your API function
 import AddShoppingCartIcon from '@material-ui/icons/AddShoppingCart';
 import {useUser} from '../context/UserContext'
 
+
+const useStyles = makeStyles((theme) => ({
+  card: {
+    maxWidth: 300, // Set the maximum width for the card
+  },
+  media: {
+    width: '100%',
+    height: '100%',
+    objectfit: 'cover'
+  },
+}));
 
 const ProductDetailPage = () => {
   const { productId } = useParams();
@@ -37,18 +48,18 @@ const ProductDetailPage = () => {
     addToCart({...product,qty:quantity})
   };
 
-
+  const classes = useStyles();
   return (
     <Container style={{ marginTop: '20px' }}>
       {product ? (
         <Grid container spacing={3}>
           <Grid item xs={12} md={6}>
-            <Card>
+            <Card className={classes.card}>
               <CardMedia
+                className={classes.media}
                 component="img"
                 alt={product.name}
-                height="300"
-                image={product.image} // Assuming you have an 'image' property in your product data
+                image={product.imgUrl} // Assuming you have an 'image' property in your product data
               />
             </Card>
           </Grid>

@@ -25,7 +25,7 @@ const ProductDashboard = ({ product, onAddToCart }) => {
 
     <Grid item xs={12} sm={6} md={4} lg={3}>
       <Paper className="product-card">
-        <img className="product-image" src={product.imageUrl} alt={product.name} loading="lazy" />
+        <img className="product-image" src={product.imgUrl} alt={product.name} loading="lazy" />
         <div className="product-details">
 
           <Typography variant="h6" className="product-title">

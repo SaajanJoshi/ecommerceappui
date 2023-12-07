@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { Button, TextField, Typography, Paper, makeStyles } from '@material-ui/core';
+import {registerUser} from '../api/loginRegisterApi';
+import { useNavigate } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -17,17 +19,36 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const RegisterForm = ({ onRegister }) => {
+const RegisterForm = () => {
   const classes = useStyles();
 
-  const [username, setUsername] = useState('');
+  const [name, setName] = useState('');
   const [password, setPassword] = useState('');
+  const [email, setEmail] = useState('');
+  const [phone, setPhone] = useState('');
+  const [zip, setZip] = useState('');
+  const [city, setCity] = useState('');
+  const [country, setCountry] = useState('');
+  const navigate = useNavigate();
 
-  const handleRegister = () => {
+  const handleRegister = async() => {
     // Implement registration logic and call onRegister when successful
     // For simplicity, we are just logging in the console in this example
-    console.log('Registered:', username);
-    onRegister(username);
+    const userData = {
+      name,
+      password,
+      email,
+      phone,
+      zip,
+      city,
+      country,
+      isAdmin: false
+    };
+    console.log('Registered:', userData);
+    const status_code = await registerUser(userData);
+    if (status_code === 200 ){
+      navigate('/login');
+    }
   };
 
   return (
@@ -37,9 +58,9 @@ const RegisterForm = ({ onRegister }) => {
       </Typography>
       <form className={classes.form}>
         <TextField
-          label="Username"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
+          label="name"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
           margin="normal"
           fullWidth
           required
@@ -52,6 +73,43 @@ const RegisterForm = ({ onRegister }) => {
           margin="normal"
           fullWidth
           required
+        />
+        <TextField
+          label="Email"
+          type="email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          margin="normal"
+          fullWidth
+          required
+        />
+        <TextField
+          label="Phone"
+          value={phone}
+          onChange={(e) => setPhone(e.target.value)}
+          margin="normal"
+          fullWidth
+        />
+        <TextField
+          label="ZIP"
+          value={zip}
+          onChange={(e) => setZip(e.target.value)}
+          margin="normal"
+          fullWidth
+        />
+        <TextField
+          label="City"
+          value={city}
+          onChange={(e) => setCity(e.target.value)}
+          margin="normal"
+          fullWidth
+        />
+        <TextField
+          label="Country"
+          value={country}
+          onChange={(e) => setCountry(e.target.value)}
+          margin="normal"
+          fullWidth
         />
         <Button
           variant="contained"
