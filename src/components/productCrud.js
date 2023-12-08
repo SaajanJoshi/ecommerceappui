@@ -1,31 +1,41 @@
 import React, { useState, useEffect } from 'react';
-import { getAllProducts } from '../api/productApi';
+import { getAllProducts, createProduct, updateProduct, deleteProduct, getAllCategories } from '../api/productApi';
 import './ProductPage.css'; // Import your custom styles
+import { useUser } from '../context/UserContext';
 
 const ProductPage = () => {
   const [products, setProducts] = useState([]);
+  const [categories, setCategories] = useState([]); // State for categories
   const [formData, setFormData] = useState({
     id: '',
     name: '',
     price: '',
+    category: '', // Category field in form data
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [isEditMode, setIsEditMode] = useState(false);
 
-  useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        setLoading(true);
-        const productList = await getAllProducts();
-        setProducts(productList);
-      } catch (error) {
-        setError('Error fetching products. Please try again.');
-      } finally {
-        setLoading(false);
-      }
-    };
+  const { token } = useUser();
 
-    fetchProducts();
+  const fetchProducts = async () => {
+    try {
+      setLoading(true);
+      const productList = await getAllProducts();
+      setProducts(productList);
+
+      // Fetch categories
+      const categoryList = await getAllCategories(token);
+      setCategories(categoryList);
+    } catch (error) {
+      setError('Error fetching products or categories. Please try again.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(async() => {
+    await fetchProducts();
   }, []);
 
   const handleInputChange = (e) => {
@@ -35,11 +45,9 @@ const ProductPage = () => {
   const handleAddProduct = async () => {
     try {
       setLoading(true);
-      // Add product API call
-      // ...
-
-      // Reset form data
-      setFormData({ id: '', name: '', price: '' });
+      await createProduct(formData, token);
+      setFormData({ id: '', name: '', price: '', category: '' });
+      fetchProducts();
     } catch (error) {
       setError('Error adding product. Please try again.');
     } finally {
@@ -50,11 +58,10 @@ const ProductPage = () => {
   const handleEditProduct = async () => {
     try {
       setLoading(true);
-      // Edit product API call
-      // ...
-
-      // Reset form data
-      setFormData({ id: '', name: '', price: '' });
+      await updateProduct(formData.id, formData, token);
+      setFormData({ id: '', name: '', price: '', category: '' });
+      fetchProducts();
+      setIsEditMode(false); // Switch back to create mode after editing
     } catch (error) {
       setError('Error updating product. Please try again.');
     } finally {
@@ -65,8 +72,8 @@ const ProductPage = () => {
   const handleDeleteProduct = async (productId) => {
     try {
       setLoading(true);
-      // Delete product API call
-      // ...
+      await deleteProduct(productId, token);
+      fetchProducts();
     } catch (error) {
       setError('Error deleting product. Please try again.');
     } finally {
@@ -76,7 +83,13 @@ const ProductPage = () => {
 
   const handleEditButtonClick = (product) => {
     // Set form data for editing
-    setFormData({ id: product.id, name: product.name, price: product.price });
+    setFormData({ id: product.id, name: product.name, price: product.price, category: product.category.id });
+    setIsEditMode(true);
+  };
+
+  const handleCreateNewProduct = () => {
+    setFormData({ id: '', name: '', price: '', category: '' });
+    setIsEditMode(false);
   };
 
   return (
@@ -86,16 +99,30 @@ const ProductPage = () => {
       {loading && <p>Loading...</p>}
       {error && <p className="error-message">{error}</p>}
 
-      {/* Product List */}
-      <ul>
-        {products.map((product) => (
-          <li key={product.id}>
-            {product.name} - ${product.price}
-            <button onClick={() => handleEditButtonClick(product)}>Edit</button>
-            <button onClick={() => handleDeleteProduct(product.id)}>Delete</button>
-          </li>
-        ))}
-      </ul>
+      {/* Product List Table */}
+      <table className="product-list-table">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Price</th>
+            <th>Category</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {products.map((product) => (
+            <tr key={product.id}>
+              <td>{product.name}</td>
+              <td>${product.price}</td>
+              <td>{product.category.name}</td>
+              <td>
+                <button onClick={() => handleEditButtonClick(product)}>Edit</button>
+                <button onClick={() => handleDeleteProduct(product.id)}>Delete</button>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
 
       {/* Product Form */}
       <div className="product-form">
@@ -104,9 +131,23 @@ const ProductPage = () => {
         <label>Price: </label>
         <input type="text" name="price" value={formData.price} onChange={handleInputChange} />
 
-        {/* Add or Edit button */}
-        {formData.id ? (
-          <button onClick={handleEditProduct}>Update Product</button>
+        {/* Category Dropdown */}
+        <label>Category: </label>
+        <select name="category" value={formData.category} onChange={handleInputChange}>
+          <option value="">Select a category</option>
+          {categories.map((category) => (
+            <option key={category.id} value={category.id}>
+              {category.name}
+            </option>
+          ))}
+        </select>
+
+        {/* Add, Edit, or Create New button */}
+        {isEditMode ? (
+          <div>
+            <button onClick={handleEditProduct}>Update Product</button>
+            <button onClick={handleCreateNewProduct}>Create New Product</button>
+          </div>
         ) : (
           <button onClick={handleAddProduct}>Add Product</button>
         )}
