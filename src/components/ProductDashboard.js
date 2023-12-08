@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Button, Paper, Typography, Input, Link, Grid } from '@material-ui/core';
+import { Button, Paper, Typography, Input, Grid } from '@material-ui/core';
 import AddShoppingCartIcon from '@material-ui/icons/AddShoppingCart';
 import './ProductDashboard.css';
 
@@ -9,10 +9,6 @@ const ProductDashboard = ({ product, onAddToCart }) => {
 
   console.log('Cart items from product :', cartItems);
   const handleQuantityChange = (e) => {
-    // Prevent the default behavior of the button inside the Input component
-    e.preventDefault();
-    // Stop the event propagation to prevent the link from being clicked
-    e.stopPropagation();
     setQuantity(e.target.value);
   };
 
@@ -22,7 +18,6 @@ const ProductDashboard = ({ product, onAddToCart }) => {
   };
 
   return (
-
     <Grid item xs={12} sm={6} md={4} lg={3}>
       <Paper className="product-card">
         <img className="product-image" src={product.imgUrl} alt={product.name} loading="lazy" />
@@ -30,7 +25,6 @@ const ProductDashboard = ({ product, onAddToCart }) => {
 
           <Typography variant="h6" className="product-title">
               {product.name}
-
           </Typography>
           <Typography variant="body1" className="product-price">
             ${product.price.toFixed(2)}

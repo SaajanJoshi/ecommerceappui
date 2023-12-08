@@ -1,4 +1,5 @@
 import { createContext, useState, useContext } from 'react';
+import { jwtDecode } from 'jwt-decode' 
 
 const UserContext = createContext();
 
@@ -6,6 +7,7 @@ export const UserProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [token, setToken] = useState(null);
   const [cartItems, setCartItems] = useState([]);
+  const [userType,setUserType] = useState(null);
 
   const addToCart = (product) => {
     // Logic to update cartItems
@@ -28,6 +30,9 @@ export const UserProvider = ({ children }) => {
   const login = (username, token) => {
     setUser(username);
     setToken(token);
+    const decodeJwt = jwtDecode(token);
+    // setUserType(decodedToken.userType);
+    setUserType(decodeJwt.isAdmin);
   };
 
   const logout = () => {
@@ -40,6 +45,7 @@ export const UserProvider = ({ children }) => {
     logout, 
     cartItems, 
     addToCart, 
+    userType,
     token
   };
 
