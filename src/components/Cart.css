@@ -1,20 +1,19 @@
-.cart {
-    position: relative;
-    margin-right: 16px;
-  }
-  
-  .cart-drawer {
-    width: 300px;
-    padding: 16px;
-  }
-  
-  .cart-title {
-    margin-bottom: 16px;
-  }
-  
-  .close-icon {
-    position: absolute;
-    top: 8px;
-    right: 8px;
-  }
-  
+.cart-modal {
+  position: fixed;
+  top: 50px;
+  right: 10px;
+  background-color: white;
+  border: 1px solid #ccc;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  padding: 10px;
+  display: none;
+}
+
+.cart-modal.open {
+  display: block;
+}
+
+.close-button {
+  margin-top: 10px;
+  cursor: pointer;
+}

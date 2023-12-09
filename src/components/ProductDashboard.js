@@ -1,59 +1,54 @@
 import React, { useState } from 'react';
-import { Button, Paper, Typography, Input, Grid } from '@material-ui/core';
+import { Button, Paper, Typography, Input } from '@material-ui/core';
 import AddShoppingCartIcon from '@material-ui/icons/AddShoppingCart';
-import './ProductDashboard.css';
+import '../styles/tailwind.css'; // Import Tailwind CSS
 
 const ProductDashboard = ({ product, onAddToCart }) => {
   const [quantity, setQuantity] = useState(1);
-  const [cartItems] = useState([]);
 
-  console.log('Cart items from product :', cartItems);
   const handleQuantityChange = (e) => {
     setQuantity(e.target.value);
   };
 
   const handleAddToCart = () => {
-    console.log('Adding to cart:', product, quantity);
     onAddToCart({ ...product, qty: quantity });
   };
 
   return (
-    <Grid item xs={12} sm={6} md={4} lg={3}>
-      <Paper className="product-card">
-        <img className="product-image" src={product.imgUrl} alt={product.name} loading="lazy" />
-        <div className="product-details">
-
-          <Typography variant="h6" className="product-title">
-              {product.name}
+    <div className="flex justify-center items-center mb-6">
+      <Paper className="w-64 p-4">
+        <img className="w-full h-40 object-cover mb-4" src={product.imgUrl} alt={product.name} loading="lazy" />
+        <div className="text-center">
+          <Typography variant="h6" className="text-lg font-bold mb-2">
+            {product.name}
           </Typography>
-          <Typography variant="body1" className="product-price">
+          <Typography variant="body1" className="text-gray-700 mb-2">
             ${product.price.toFixed(2)}
           </Typography>
-          <div className="quantity-control">
-            <label htmlFor={`quantity-${product.id}`}>Quantity:</label>
+          <div className="flex items-center justify-center mb-4">
+            <label htmlFor={`quantity-${product.id}`} className="mr-2">
+              Quantity:
+            </label>
             <Input
               type="number"
               id={`quantity-${product.id}`}
               name={`quantity-${product.id}`}
               value={quantity}
               onChange={handleQuantityChange}
+              className="border px-2 py-1 w-16 quantity-control"
             />
           </div>
           <Button
             onClick={handleAddToCart}
-            className="add-to-cart-btn"
-            variant="contained"
-            color="primary"
+            className="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded button-control"
             startIcon={<AddShoppingCartIcon />}
           >
             Add to Cart
           </Button>
         </div>
       </Paper>
-    </Grid>
-);
+    </div>
+  );
 };
 
 export default ProductDashboard;
-
-
